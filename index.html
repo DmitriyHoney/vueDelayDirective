@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Homework</title>
+</head>
+
+
+<body>
+    <div id="app"> 
+        
+    
+    <button v-ondelay:click.prevent.2000="onClick">Click Me</button>
+        {{clicks}}
+        
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script>
+
+        Vue.directive('ondelay', {
+            bind(el, options) {
+                let timer;
+                let timeout = 0;
+
+                for (let name in options.modifiers) {
+                    if (!isNaN(+name)) timeout = parseInt(name);
+                }
+
+                let callback = (e) => {
+                    if (timer !== undefined) clearInterval(timer);
+                    if (options.modifiers.prevent) e.preventDefault();
+
+                    timer = setTimeout(() => {
+                        options.value.call(this)
+                    }, timeout)
+
+                    
+                };
+                el.addEventListener(options.arg, callback)
+            }
+        })
+
+
+        new Vue({
+            el: '#app',
+            data: {
+                clicks: 0
+            },
+            methods: {
+                onClick() {
+                    this.clicks++;
+                }
+                
+            },
+            computed: {
+            }
+        });
+
+
+    </script>
+
+    
+    <script src="script.js"></script>
+</body>
+</html>
